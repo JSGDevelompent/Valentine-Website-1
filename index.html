@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valentine 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .hearts-background {
+            position: fixed;
+            top: -4vh;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart-emoji {
+            position: absolute;
+            opacity: 0.3;
+            animation: floatHearts 10s infinite linear;
+            font-size: 20px;
+        }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateY(110vh) translateX(0);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        body {
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Dancing Script', cursive;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            height: 500px;
+            transition: all 0.5s ease;
+        }
+
+        .valentine-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: all 1s ease;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            background: #fff;
+        }
+
+        .valentine-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .front {
+            background: #fff;
+        }
+
+        .envelope {
+            width: 200px;
+            height: 150px;
+            background: #ff4d6d;
+            margin: 20px 0;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: -70px;
+            left: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 70px solid #ff758c;
+        }
+
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 50px;
+            animation: heartbeat 1.2s infinite;
+        }
+
+        .back {
+            background: #fff;
+            transform: rotateY(180deg);
+            text-align: center;
+        }
+
+        .photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 15px 0;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEeC7SQouP9fiQDV1r0b9hel3S8qO9VIrpvxX6YffCdzkjofXLJN21ntU&s=10') center/cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .message {
+            margin: 15px 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .btn {
+            padding: 12px 35px;
+            background: linear-gradient(45deg, #ff4d6d, #ff758c);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .memory-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+        }
+
+        .memory-modal.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .slider-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .slider-item {
+            min-width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .memory-text {
+            font-size: 1.1em;
+            margin: 15px 0;
+            opacity: 0;
+            animation: textReveal 0.5s forwards;
+            animation-delay: 0.3s;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            z-index: 999;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            15% { transform: translate(-50%, -50%) scale(1.3); }
+            30% { transform: translate(-50%, -50%) scale(1); }
+            45% { transform: translate(-50%, -50%) scale(1.15); }
+            60% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes textReveal {
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                height: 450px;
+            }
+            
+            .slider-container {
+                height: 200px;
+            }
+            
+            .message {
+                font-size: 1em;
+            }
+            
+            .btn {
+                padding: 10px 25px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-background" id="heartsContainer"></div>
+    <div class="container">
+        <div class="valentine-card" onclick="toggleCard()">
+            <div class="front">
+                <div class="envelope">
+                    <div class="heart">❤️</div>
+                </div>
+                <h2>Tap to Open My Heart</h2>
+            </div>
+            <div class="back">
+                <div class="photo"></div>
+                <div class="message">
+                    <h2>For My Beloved ❤️</h2>
+                    <p>You are the missing piece that completes my soul...</p>
+                </div>
+                <button class="btn" onclick="showMemoryModal()">Yes, Forever! 🌹</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="memory-modal" id="memoryModal">
+        <h2>Our Timeless Moments 💞</h2>
+        <div class="slider-container">
+            <div class="slider-track" id="sliderTrack">
+                <div class="slider-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEeC7SQouP9fiQDV1r0b9hel3S8qO9VIrpvxX6YffCdzkjofXLJN21ntU&s=10')"></div>
+                <div class="slider-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEeC7SQouP9fiQDV1r0b9hel3S8qO9VIrpvxX6YffCdzkjofXLJN21ntU&s=10')"></div>
+                <div class="slider-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEeC7SQouP9fiQDV1r0b9hel3S8qO9VIrpvxX6YffCdzkjofXLJN21ntU&s=10')"></div>
+            </div>
+        </div>
+        <div class="memory-text">
+            "In every heartbeat, in every breath, my love for you grows stronger. 
+            You are my today and all of my tomorrows."
+        </div>
+        <button class="btn" onclick="closeMemoryModal()">Close</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let sliderInterval;
+
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-emoji';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.animationDuration = 5 + Math.random() * 10 + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        function toggleCard() {
+            document.querySelector('.valentine-card').classList.toggle('flipped');
+        }
+
+        function startSlider() {
+            const sliderTrack = document.getElementById('sliderTrack');
+            const slides = document.querySelectorAll('.slider-item');
+            
+            sliderInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }, 3000);
+        }
+
+        function showMemoryModal() {
+            document.getElementById('overlay').classList.add('active');
+            document.getElementById('memoryModal').classList.add('active');
+            document.querySelector('.container').style.transform = 'scale(0.9)';
+            currentSlide = 0;
+            startSlider();
+        }
+
+        function closeMemoryModal() {
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('memoryModal').classList.remove('active');
+            document.querySelector('.container').style.transform = 'scale(1)';
+            clearInterval(sliderInterval);
+        }
+        window.onload = function() {
+            createHearts();
+            document.getElementById('overlay').addEventListener('click', closeMemoryModal);
+        };
+
+    </script>
+</body>
+</html>
