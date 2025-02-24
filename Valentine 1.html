@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valentine 1</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="hearts-background" id="heartsContainer"></div>
+    <div class="container">
+        <div class="valentine-card" onclick="toggleCard()">
+            <div class="front">
+                <div class="envelope">
+                    <div class="heart">❤️</div>
+                </div>
+                <h2>Tap to Open My Heart</h2>
+            </div>
+            <div class="back">
+                <div class="photo"></div>
+                <div class="message">
+                    <h2>For My Beloved ❤️</h2>
+                    <p>You are the missing piece that completes my soul...</p>
+                </div>
+                <button class="btn" onclick="showMemoryModal()">Yes, Forever! 🌹</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="memory-modal" id="memoryModal">
+        <h2>Our Timeless Moments 💞</h2>
+        <div class="slider-container">
+            <div class="slider-track" id="sliderTrack">
+                <!-- Ganti Gambar Disini -->
+                <div class="slider-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEeC7SQouP9fiQDV1r0b9hel3S8qO9VIrpvxX6YffCdzkjofXLJN21ntU&s=10')"></div>
+                <div class="slider-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEeC7SQouP9fiQDV1r0b9hel3S8qO9VIrpvxX6YffCdzkjofXLJN21ntU&s=10')"></div>
+                <div class="slider-item" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEeC7SQouP9fiQDV1r0b9hel3S8qO9VIrpvxX6YffCdzkjofXLJN21ntU&s=10')"></div>
+                <!--  -->
+            </div>
+        </div>
+        <div class="memory-text">
+            "In every heartbeat, in every breath, my love for you grows stronger. 
+            You are my today and all of my tomorrows."
+        </div>
+        <button class="btn" onclick="closeMemoryModal()">Close</button>
+    </div>
+    <script src="script.js"></script>
+    
+</body>
+</html>
